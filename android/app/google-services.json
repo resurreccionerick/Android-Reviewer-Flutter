@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "213135884945",
+    "project_id": "android-reviewer",
+    "storage_bucket": "android-reviewer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:213135884945:android:2ac7a39361668c466ab530",
+        "android_client_info": {
+          "package_name": "com.example.android_reviewer_flutter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFyODRmdBZBS88be1KRRf3k574MktuuCU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:213135884945:android:06b47266e3672def6ab530",
+        "android_client_info": {
+          "package_name": "com.example.firebase_todo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFyODRmdBZBS88be1KRRf3k574MktuuCU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
