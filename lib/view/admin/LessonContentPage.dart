@@ -11,7 +11,7 @@ class LessonContentPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(lesson.title), // Display the lesson title in the AppBar
+     //   title: Text(lesson.title), // Display the lesson title in the AppBar
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

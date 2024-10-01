@@ -79,7 +79,7 @@ class LessonScreen extends StatelessWidget {
 
               return ListTile(
                   title: Text(lesson.title),
-                  subtitle: Text(lesson.content),
+                  // subtitle: Text(lesson.content),
                   onTap: () {
                     //navigate to lesson content page
                     Navigator.push(
@@ -92,7 +92,9 @@ class LessonScreen extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
-                          onPressed: () => appViewModel.deleteLesson,
+                          onPressed: () => showDeleteLessonConfirmationDialog(
+                              context, appViewModel, subjectID, lesson),
+                          // appViewModel.deleteLesson(subjectID, lesson),
                           icon: const Icon(Icons.delete)),
                       IconButton(
                           onPressed: () =>
@@ -195,5 +197,34 @@ class LessonScreen extends StatelessWidget {
             ],
           );
         });
+  }
+
+  void showDeleteLessonConfirmationDialog(BuildContext context,
+      AppViewModel appViewModel, String lessonId, LessonModel lesson) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Delete Lesson Confirmation"),
+          content: const Text(
+              "Are you sure you want to delete this lesson? This action cannot be undone."),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () {
+                appViewModel.deleteLesson(lessonId, lesson);
+                Navigator.pop(context);
+              },
+              child: const Text("Delete", style: TextStyle(color: Colors.red)),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

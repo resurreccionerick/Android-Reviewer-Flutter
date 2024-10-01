@@ -41,7 +41,7 @@ class UserLessonScreen extends StatelessWidget {
 
                 return ListTile(
                   title: Text(lesson.title),
-                  subtitle: Text(lesson.content),
+                 // subtitle: Text(lesson.content),
                   onTap: () {
                     // Navigate to lesson content page
                     Navigator.push(

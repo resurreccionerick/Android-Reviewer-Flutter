@@ -67,7 +67,8 @@ class AppViewModel extends ChangeNotifier {
 
       // Check if the document exists and return the role
       if (userDoc.exists) {
-        var userData = userDoc.data() as Map<String, dynamic>; // Cast data to a Map
+        var userData =
+            userDoc.data() as Map<String, dynamic>; // Cast data to a Map
         String role = userData['role']; // Retrieve the 'role' field
 
         // Print the role for debugging
@@ -83,46 +84,10 @@ class AppViewModel extends ChangeNotifier {
       }
     } catch (e) {
       print('Error logging in: $e');
-      // Handle errors (e.g., wrong password, no user found)
     }
 
     return null; // Return null if no role is found or an error occurs
   }
-
-  // Future<String?> loginUser(
-  //     BuildContext context, String email, String password) async {
-  //   try {
-  //     // Authenticate user with email and password
-  //     UserCredential userCredential = await FirebaseAuth.instance
-  //         .signInWithEmailAndPassword(email: email, password: password);
-  //
-  //     // Retrieve the user's document from Firestore
-  //     DocumentSnapshot userDoc = await FirebaseFirestore.instance
-  //         .collection('users')
-  //         .doc(userCredential.user?.uid)
-  //         .get();
-  //
-  //     // Check if the document exists and return the role
-  //     if (userDoc.exists) {
-  //       // Retrieve role from the user document
-  //       var userData =
-  //           userDoc.data() as Map<String, dynamic>; // Cast data to a Map
-  //       String role = userData['role']; // Return the 'role' field
-  //       print("USER ROLE TO:" + role);
-  //       //store in shared pref
-  //       SharedPreferences pref = await SharedPreferences.getInstance();
-  //       await pref.setString('userRole', role);
-  //
-  //       return role;
-  //     } else {
-  //       print('User document does not exist');
-  //     }
-  //   } catch (e) {
-  //     print('Error logging in: $e');
-  //     // Handle errors (e.g., wrong password, no user found)
-  //   }
-  //   return null; // Return null if no role is found or an error occurs
-  // }
 
   Future<bool> logoutUser() async {
     auth.signOut();
@@ -147,7 +112,11 @@ class AppViewModel extends ChangeNotifier {
 
   // fetch all subjects
   Stream<List<SubjectModel>> getSubjects() {
-    return firestore.collection('subjects').snapshots().map((snapshot) {
+    return firestore
+        .collection('subjects')
+        .orderBy('subjectName', descending: true)
+        .snapshots()
+        .map((snapshot) {
       return snapshot.docs.map((doc) {
         return SubjectModel.fromDocument(doc.data(), doc.id);
       }).toList();
@@ -169,6 +138,7 @@ class AppViewModel extends ChangeNotifier {
         .collection('subjects')
         .doc(subjectID)
         .collection('lessons')
+        .orderBy('title', descending: false)
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {

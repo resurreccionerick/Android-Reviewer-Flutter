@@ -49,11 +49,13 @@ class SubjectScreen extends StatelessWidget {
                         children: [
                           IconButton(
                               onPressed: () =>
-                                  appViewModel.deleteSubject(subject.id),
+                                  showDeleteConfirmationDialog(
+                                      context, appViewModel, subject.id, subject.subjectName),
                               icon: const Icon(Icons.delete)),
                           IconButton(
-                              onPressed: () => showUpdateDialog(
-                                  context, appViewModel, subject),
+                              onPressed: () =>
+                                  showUpdateDialog(
+                                      context, appViewModel, subject),
                               icon: const Icon(Icons.edit)),
                         ],
                       ));
@@ -80,7 +82,7 @@ class SubjectScreen extends StatelessWidget {
               TextButton(
                   onPressed: () {
                     final newSubject =
-                        SubjectModel(id: '', subjectName: controller.text);
+                    SubjectModel(id: '', subjectName: controller.text,);
                     appViewModel.addSubject(newSubject);
 
                     Navigator.pop(context);
@@ -93,8 +95,8 @@ class SubjectScreen extends StatelessWidget {
         });
   }
 
-  showUpdateDialog(
-      BuildContext context, AppViewModel appViewModel, SubjectModel subject) {
+  showUpdateDialog(BuildContext context, AppViewModel appViewModel,
+      SubjectModel subject) {
     controller.text = subject.subjectName;
 
     showDialog(
@@ -105,7 +107,7 @@ class SubjectScreen extends StatelessWidget {
             content: TextField(
               controller: controller,
               decoration:
-                  const InputDecoration(hintText: "Enter new subject name"),
+              const InputDecoration(hintText: "Enter new subject name"),
             ),
             actions: [
               TextButton(
@@ -125,4 +127,35 @@ class SubjectScreen extends StatelessWidget {
           );
         });
   }
+
+  void showDeleteConfirmationDialog(BuildContext context,
+      AppViewModel appViewModel, String subjectId, String subjectName) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Delete $subjectName"),
+          content: const Text(
+              "Are you sure you want to delete this subject? This action cannot be undone."),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () {
+                // If the user confirms, delete the subject and close the dialog
+                appViewModel.deleteSubject(subjectId);
+                Navigator.pop(context); // Close the dialog after deletion
+              },
+              child: const Text("Delete", style: TextStyle(color: Colors.red)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 }

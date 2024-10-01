@@ -31,26 +31,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: DecoratedBox(
               decoration: BoxDecoration(color: Colors.green),
             ),
-            height: 150,
+            height: 300,
             width: double.infinity,
           ),
           Padding(
             padding: const EdgeInsets.all(15),
             child: Column(
               children: [
-                Card(
-                  elevation: 5,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [Text(appViewModel.name)], // Display user name
-                    ),
-                  ),
-                ),
+                // Card(
+                //   elevation: 5,
+                //   shape: RoundedRectangleBorder(
+                //     borderRadius: BorderRadius.circular(5),
+                //   ),
+                //   child: Padding(
+                //     padding: const EdgeInsets.all(10),
+                //     child: Row(
+                //       mainAxisAlignment: MainAxisAlignment.start,
+                //       children: [Text(appViewModel.name)], // Display user name
+                //     ),
+                //   ),
+                // ),
                 const SizedBox(height: 10),
                 Card(
                   elevation: 5,
