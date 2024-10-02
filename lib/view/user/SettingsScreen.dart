@@ -3,6 +3,7 @@ import 'package:android_reviewer_flutter/viewmodel/AppViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/widgets.dart'; // Import if you use additional widgets
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -27,30 +28,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
       backgroundColor: Colors.green[100],
       body: Column(
         children: [
-          const SizedBox(
-            child: DecoratedBox(
-              decoration: BoxDecoration(color: Colors.green),
-            ),
-            height: 300,
+          // Add the GIF inside a SizedBox at the top
+          SizedBox(
+            height: 300, // Adjust the height as needed
             width: double.infinity,
+            child: Image.asset(
+              'assets/logo_settings.gif', // Path to your GIF
+              fit: BoxFit.cover, // Adjust fit as necessary
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(15),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start, // Align to the left
               children: [
-                // Card(
-                //   elevation: 5,
-                //   shape: RoundedRectangleBorder(
-                //     borderRadius: BorderRadius.circular(5),
-                //   ),
-                //   child: Padding(
-                //     padding: const EdgeInsets.all(10),
-                //     child: Row(
-                //       mainAxisAlignment: MainAxisAlignment.start,
-                //       children: [Text(appViewModel.name)], // Display user name
-                //     ),
-                //   ),
-                // ),
                 const SizedBox(height: 10),
                 Card(
                   elevation: 5,
@@ -60,41 +51,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   child: Padding(
                     padding: const EdgeInsets.all(10),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text("Email: ${appViewModel.email}")
+                        Text("Email: ${appViewModel.email}"),
                       ], // Display user email
                     ),
                   ),
                 ),
-                const SizedBox(height: 20), // Space before the button
-                Container(
-                  width: double.infinity, // Button width matches card width
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Action for the button press
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Change Password Pressed'),
-                        ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: Colors.green,
-                      // Background color of the button
-                      padding: const EdgeInsets.all(1.0),
-                      // Padding inside the button
-                      shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(5), // Match card shape
-                      ),
-                    ),
-                    child: const Text('Change Password'),
-                  ),
-                ),
-                const SizedBox(height: 20), // Space before the button
+                const SizedBox(height: 20),
+                // Logout button
                 Container(
                   width: double.infinity, // Button width matches card width
                   padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -103,8 +67,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       bool? isLogout = await appViewModel.logoutUser();
                       if (isLogout) {
                         SharedPreferences pref =
-                            await SharedPreferences.getInstance();
-                        pref.remove('userRole'); //remove shared pref
+                        await SharedPreferences.getInstance();
+                        pref.remove('userRole'); // Remove shared pref
 
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
@@ -114,16 +78,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
-                      backgroundColor: Colors.red,
-                      // Background color of the button
-                      padding: const EdgeInsets.all(1.0),
-                      // Padding inside the button
+                      backgroundColor: Colors.red, // Button background color
+                      padding: const EdgeInsets.all(1.0), // Button padding
                       shape: RoundedRectangleBorder(
                         borderRadius:
-                            BorderRadius.circular(5), // Match card shape
+                        BorderRadius.circular(5), // Match card shape
                       ),
                     ),
-                    child: const Text('Logout'),
+                    child: const Text(
+                      'Logout',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
               ],

@@ -11,26 +11,27 @@ class LessonContentPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-     //   title: Text(lesson.title), // Display the lesson title in the AppBar
+       // title: Text(lesson.title), // Display the lesson title in the AppBar
+        backgroundColor: Colors.green[600],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start, // Align text to the left
           children: [
             // Display the lesson title
             Text(
               lesson.title,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             // Display the lesson content
             Text(
               lesson.content,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 16,
               ),
             ),

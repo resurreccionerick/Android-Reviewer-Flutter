@@ -1,6 +1,5 @@
 import 'package:android_reviewer_flutter/model/QuizModel.dart';
 import 'package:android_reviewer_flutter/viewmodel/AppViewModel.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -27,6 +26,7 @@ class _QuizScreenState extends State<QuizScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Quiz"),
+        backgroundColor: Colors.green[600],
       ),
       body: StreamBuilder<List<QuizModel>>(
         stream: appViewModel.getQuizzes(widget.subjectID),
@@ -58,66 +58,89 @@ class _QuizScreenState extends State<QuizScreen> {
             });
           }
 
-          return Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Display the question
-                Text(
-                  'Question ${currentQuestionIndex + 1}: ${quizzes[currentQuestionIndex].question}',
-                  style: const TextStyle(fontSize: 18),
-                ),
-                const SizedBox(height: 20),
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Display the question
+                  Text(
+                    'Question ${currentQuestionIndex + 1}:',
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    quizzes[currentQuestionIndex].question,
+                    style: const TextStyle(fontSize: 18),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 20),
 
-                // Display the options
-                for (var option in quizzes[currentQuestionIndex].options)
-                  Container(
-                    decoration: BoxDecoration(
-                      color: getOptionColor(option, quizzes[currentQuestionIndex]),
-                      borderRadius: BorderRadius.circular(8),
+                  // Display the options
+                  for (var option in quizzes[currentQuestionIndex].options)
+                    Container(
+                      margin: const EdgeInsets.only(top: 8),
+                      decoration: BoxDecoration(
+                        color: getOptionColor(option, quizzes[currentQuestionIndex]),
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: Colors.grey.shade300),
+                      ),
+                      child: RadioListTile<String>(
+                        title: Text(option),
+                        value: option,
+                        groupValue: selectedAnswer,
+                        onChanged: (value) {
+                          setState(() {
+                            selectedAnswer = value;
+                            // Check if the selected answer is correct
+                            if (value == quizzes[currentQuestionIndex].correctAns) {
+                              correctAnswersCount++;
+                            }
+                          });
+                        },
+                      ),
                     ),
-                    child: RadioListTile<String>(
-                      title: Text(option),
-                      value: option,
-                      groupValue: selectedAnswer,
-                      onChanged: (value) {
+
+                  const SizedBox(height: 20),
+
+                  // Button to go to the next question or submit quiz
+                  ElevatedButton(
+                    onPressed: selectedAnswer == null
+                        ? null // Disable button if no answer is selected
+                        : () {
+                      if (currentQuestionIndex < quizzes.length - 1) {
+                        // Move to the next question
                         setState(() {
-                          selectedAnswer = value;
-                          // Check if the selected answer is correct
-                          if (value == quizzes[currentQuestionIndex].correctAns) {
-                            correctAnswersCount++;
-                          }
+                          currentQuestionIndex++;
+                          selectedAnswer = null; // Reset selected answer
                         });
-                      },
+                      } else {
+                        // Finish the quiz
+                        setState(() {
+                          isQuizFinished = true;
+                        });
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 24),
+                      backgroundColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: Text(
+                      currentQuestionIndex < quizzes.length - 1
+                          ? "Next Question"
+                          : "Submit Quiz",
+                      style: const TextStyle(fontSize: 16),
                     ),
                   ),
-
-                const SizedBox(height: 20),
-
-                // Button to go to the next question or submit quiz
-                ElevatedButton(
-                  onPressed: selectedAnswer == null
-                      ? null // Disable button if no answer is selected
-                      : () {
-                    if (currentQuestionIndex < quizzes.length - 1) {
-                      // Move to the next question
-                      setState(() {
-                        currentQuestionIndex++;
-                        selectedAnswer = null; // Reset selected answer
-                      });
-                    } else {
-                      // Finish the quiz
-                      setState(() {
-                        isQuizFinished = true;
-                      });
-                    }
-                  },
-                  child: Text(currentQuestionIndex < quizzes.length - 1
-                      ? "Next Question"
-                      : "Submit Quiz"),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },

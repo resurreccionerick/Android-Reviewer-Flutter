@@ -234,4 +234,20 @@ class AppViewModel extends ChangeNotifier {
       'timestamp': FieldValue.serverTimestamp(),
     });
   }
+
+  Future<void> sendPasswordResetEmail(
+      BuildContext context, String email) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Password reset email sent! Check your inbox."),
+      ));
+      // Optionally, navigate back or clear the input
+      Navigator.pop(context);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Error: ${e.toString()}"),
+      ));
+    }
+  }
 }
