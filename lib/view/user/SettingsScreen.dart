@@ -49,7 +49,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     borderRadius: BorderRadius.circular(5),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(20),
                     child: Row(
                       children: [
                         Text("Email: ${appViewModel.email}"),
@@ -61,7 +61,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 // Logout button
                 Container(
                   width: double.infinity, // Button width matches card width
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: ElevatedButton(
                     onPressed: () async {
                       bool? isLogout = await appViewModel.logoutUser();

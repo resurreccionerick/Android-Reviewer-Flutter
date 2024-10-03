@@ -25,7 +25,7 @@ class AppViewModel extends ChangeNotifier {
       email = currentUser.email ?? "No Email";
     } else {
       name = "Loading...";
-      email = "Loading...";
+      email = "You are anonymous";
     }
 
     notifyListeners();
@@ -114,7 +114,7 @@ class AppViewModel extends ChangeNotifier {
   Stream<List<SubjectModel>> getSubjects() {
     return firestore
         .collection('subjects')
-        .orderBy('subjectName', descending: true)
+        .orderBy('subjectName', descending: false)
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {
@@ -244,6 +244,17 @@ class AppViewModel extends ChangeNotifier {
       ));
       // Optionally, navigate back or clear the input
       Navigator.pop(context);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Error: ${e.toString()}"),
+      ));
+    }
+  }
+
+  void signInAnonymously(BuildContext context) async {
+    try {
+      UserCredential credential =
+          await FirebaseAuth.instance.signInAnonymously();
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Error: ${e.toString()}"),

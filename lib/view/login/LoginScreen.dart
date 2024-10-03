@@ -1,4 +1,5 @@
 import 'package:android_reviewer_flutter/view/login/ChangePasswordScreen.dart';
+import 'package:android_reviewer_flutter/view/user/HomeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../main.dart';
@@ -48,17 +49,27 @@ class _LoginScreenState extends State<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   // Image above "Welcome"
-                  const CircleAvatar(
-                    radius: 110,
-                    backgroundImage: AssetImage('assets/android_logo.png'),
-                    // Replace with your image path
-                    backgroundColor: Colors.transparent,
+                  Container(
+                    width: 200, // Adjust the width to fit your needs
+                    height: 200, // Adjust the height to fit your needs
+                    decoration: BoxDecoration(
+                      shape: BoxShape.rectangle, // Keeps it as a rectangle
+                      image: DecorationImage(
+                        image: AssetImage('assets/android_logo.png'),
+                        // Your image path
+                        fit: BoxFit
+                            .cover, // Adjusts the image to cover the container
+                      ),
+                      color: Colors
+                          .transparent, // Optional: Set to transparent or any color
+                    ),
                   ),
+
                   //const SizedBox(height: 10),
 
                   // const Text(
                   //   "Reviewer",
-                  //   style: TextStyle(
+                  //   style: TextStyle(r
                   //     fontSize: 30,
                   //     fontWeight: FontWeight.bold,
                   //     color: Colors.white,
@@ -97,12 +108,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       onPressed: _isLoading // Disable when loading
                           ? null
                           : () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    ChangePasswordScreen()));
-                      },
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ChangePasswordScreen()));
+                            },
                       child: const Text(
                         "Change Password",
                         style: TextStyle(
@@ -113,86 +124,125 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
 
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 20),
 
                   // Login Button
-                  ElevatedButton(
-                    onPressed: _isLoading // Disable when loading
-                        ? null
-                        : () async {
-                      if (_emailController.text.isEmpty ||
-                          _passController.text.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("Please enter all fields!"),
-                          ),
-                        );
-                      } else {
-                        setState(() {
-                          _isLoading = true; // Start loading
-                        });
+                  SizedBox(
+                    width: 300,
+                    child: ElevatedButton(
+                      onPressed: _isLoading // Disable when loading
+                          ? null
+                          : () async {
+                              if (_emailController.text.isEmpty ||
+                                  _passController.text.isEmpty) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text("Please enter all fields!"),
+                                  ),
+                                );
+                              } else {
+                                setState(() {
+                                  _isLoading = true; // Start loading
+                                });
 
-                        String? role = await appViewModel.loginUser(
-                          context,
-                          _emailController.text,
-                          _passController.text,
-                        );
+                                String? role = await appViewModel.loginUser(
+                                  context,
+                                  _emailController.text,
+                                  _passController.text,
+                                );
 
-                        // Stop loading after getting the result
-                        setState(() {
-                          _isLoading = false;
-                        });
+                                // Stop loading after getting the result
+                                setState(() {
+                                  _isLoading = false;
+                                });
 
-                        if (role != null) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text("Welcome $role")),
-                          );
+                                if (role != null) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text("Welcome $role")),
+                                  );
 
-                          if (role == 'admin' || role == 'user') {
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                builder: (context) => MainScreen(role),
-                              ),
-                            );
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                    "Something went wrong. Please try again later."),
-                              ),
-                            );
-                          }
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("Login failed. Please try again."),
-                            ),
-                          );
-                        }
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 15,
-                        horizontal: 80,
+                                  if (role == 'admin' || role == 'user') {
+                                    Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                        builder: (context) => MainScreen(role),
+                                      ),
+                                    );
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                            "Something went wrong. Please try again later."),
+                                      ),
+                                    );
+                                  }
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                          "Login failed. Please try again."),
+                                    ),
+                                  );
+                                }
+                              }
+                            },
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 15,
+                          horizontal: 80,
+                        ),
+                        backgroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                              10), // Squared border radius
+                        ),
                       ),
-                      backgroundColor: Colors.black,
-                      shape: RoundedRectangleBorder(
-                        borderRadius:
-                        BorderRadius.circular(10), // Squared border radius
+                      child: const Text(
+                        "Login as User",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                    child: const Text(
-                      "Login",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                  ),
+
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    width: 300,
+                    child: ElevatedButton(
+                      onPressed: _isLoading // Disable when loading
+                          ? null
+                          : () async {
+                              appViewModel.signInAnonymously(context);
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) => MainScreen("user"),
+                                ),
+                              );
+                            },
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 15,
+                          horizontal: 80,
+                        ),
+                        backgroundColor: Colors.white70,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                              10), // Squared border radius
+                        ),
+                      ),
+                      child: const Text(
+                        "Login as Anonymous",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
                   const SizedBox(height: 20),
-
                   // Show progress indicator when loading
                   if (_isLoading)
                     const CircularProgressIndicator(
@@ -211,12 +261,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: _isLoading // Disable when loading
                             ? null
                             : () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => const SignupScreen(),
-                            ),
-                          );
-                        },
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => const SignupScreen(),
+                                  ),
+                                );
+                              },
                         child: const Text(
                           "Register",
                           style: TextStyle(
@@ -258,12 +308,12 @@ class _LoginScreenState extends State<LoginScreen> {
         prefixIcon: Icon(icon, color: const Color(0xFF0F9D58)),
         suffixIcon: isPassword
             ? IconButton(
-          icon: Icon(
-            isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-            color: const Color(0xFF0F9D58),
-          ),
-          onPressed: togglePasswordVisibility,
-        )
+                icon: Icon(
+                  isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                  color: const Color(0xFF0F9D58),
+                ),
+                onPressed: togglePasswordVisibility,
+              )
             : null,
       ),
     );
