@@ -2,7 +2,6 @@ import 'package:android_reviewer_flutter/model/LessonModel.dart';
 import 'package:android_reviewer_flutter/model/SubjectModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -28,7 +27,10 @@ class AppViewModel extends ChangeNotifier {
       email = "You are anonymous";
     }
 
-    notifyListeners();
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      notifyListeners();
+    });
+   // notifyListeners();
   }
 
   // **
@@ -114,7 +116,7 @@ class AppViewModel extends ChangeNotifier {
   Stream<List<SubjectModel>> getSubjects() {
     return firestore
         .collection('subjects')
-        .orderBy('subjectName', descending: false)
+        .orderBy('subjectName', descending: true)
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {

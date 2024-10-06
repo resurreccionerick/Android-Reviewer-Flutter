@@ -11,13 +11,14 @@ class LessonContentPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.green[500],
        // title: Text(lesson.title), // Display the lesson title in the AppBar
-        backgroundColor: Colors.green[600],
       ),
-      body: Padding(
+      backgroundColor: Colors.white,
+      body: SingleChildScrollView( // Wrap the body with SingleChildScrollView
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start, // Align text to the left
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Display the lesson title
             Text(
@@ -30,7 +31,7 @@ class LessonContentPage extends StatelessWidget {
             const SizedBox(height: 16),
             // Display the lesson content
             Text(
-              lesson.content,
+              lesson.content, // Update this to use subjectContent instead of subjectTitle
               style: const TextStyle(
                 fontSize: 16,
               ),

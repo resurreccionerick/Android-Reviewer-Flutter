@@ -124,6 +124,7 @@ class LessonScreen extends StatelessWidget {
                 TextField(
                   controller: contentController,
                   decoration: const InputDecoration(hintText: "Content"),
+                  maxLines: 5,
                 )
               ],
             ),
@@ -171,6 +172,7 @@ class LessonScreen extends StatelessWidget {
                 TextField(
                   controller: contentController,
                   decoration: const InputDecoration(hintText: "Content"),
+                  maxLines: 5,
                 )
               ],
             ),
